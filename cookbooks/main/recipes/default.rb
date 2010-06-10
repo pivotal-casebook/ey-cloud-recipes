@@ -6,4 +6,5 @@
 
 require_recipe "dnapi"
 require_recipe "postgres"
+
 require_recipe "sunspot"
