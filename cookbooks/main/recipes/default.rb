@@ -5,6 +5,6 @@
 #end
 
 require_recipe "dnapi"
-require_recipe "postgres"
+require_recipe "postgres::default"
 
 require_recipe "sunspot"
