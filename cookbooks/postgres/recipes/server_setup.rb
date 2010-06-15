@@ -14,6 +14,10 @@ package "dev-db/postgresql-server" do
   action :install
 end
 
+execute "set version of postgresql to use" do
+  command "eselect postgresql set #{postgres_version}"
+end
+
 execute "remove kernel.shmmax from sysctl" do
   command "grep -v kernel.shmmax /etc/sysctl.conf >> /tmp/sysctl.conf"
   only_if { "grep kernel.shmmax=#{@node[:total_memory]} /etc/sysctl.conf" } 
