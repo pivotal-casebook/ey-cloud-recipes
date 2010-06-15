@@ -1,6 +1,14 @@
 postgres_version = '8.4'
 postgres_root    = '/var/lib/postgresql'
 
+execute "remove older postgresql-server" do
+  command "emerge --unmerge dev-db/postgresql-server-8.3.5"
+end
+
+execute "remove older postgresql-base" do
+  command "emerge --unmerge dev-db/postgresql-base-8.3.5"
+end
+
 enable_package "dev-db/postgresql-base" do
   version "8.4.2"
 end
@@ -12,10 +20,6 @@ end
 package "dev-db/postgresql-server" do
   version "8.4.2"
   action :install
-end
-
-execute "set version of postgresql to use" do
-  command "eselect postgresql set #{postgres_version}"
 end
 
 execute "remove kernel.shmmax from sysctl" do
