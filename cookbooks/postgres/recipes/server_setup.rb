@@ -1,5 +1,14 @@
-postgres_version = '8.3'
+postgres_version = '8.4'
 postgres_root    = '/var/lib/postgresql'
+
+enable_package "dev-db/postgresql-server" do
+  version "8.4.2"
+end
+
+package "dev-db/postgresql-server" do
+  version "8.4.2"
+  action :install
+end
 
 execute "remove kernel.shmmax from sysctl" do
   command "grep -v kernel.shmmax /etc/sysctl.conf >> /tmp/sysctl.conf"

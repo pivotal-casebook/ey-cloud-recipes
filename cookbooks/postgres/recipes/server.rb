@@ -1,4 +1,4 @@
-postgres_version = '8.3'
+postgres_version = '8.4'
 postgres_root    = '/var/lib/postgresql'
 
 require_recipe 'postgres::server_setup'

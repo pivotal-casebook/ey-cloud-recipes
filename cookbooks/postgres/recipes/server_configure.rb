@@ -1,4 +1,4 @@
-postgres_version = '8.3'
+postgres_version = '8.4'
 postgres_root    = '/var/lib/postgresql'
 
 template "#{postgres_root}/#{postgres_version}/data/postgresql.conf" do
