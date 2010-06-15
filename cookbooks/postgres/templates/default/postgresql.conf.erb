@@ -23,13 +23,13 @@ maintenance_work_mem = <%= @maintenance_work_mem %>
 
 # - Free Space Map -
 
-max_fsm_pages     = <%= @max_fsm_pages %>
-max_fsm_relations = <%= @max_fsm_relations %>
+#max_fsm_pages     = <%= @max_fsm_pages %>
+#max_fsm_relations = <%= @max_fsm_relations %>
 					# (change requires restart)
 
 # - Kernel Resource Usage -
 
-max_files_per_process = 65535
+#max_files_per_process = 65535
 					# (change requires restart)
 #shared_preload_libraries = ''		# (change requires restart)
 
@@ -74,7 +74,7 @@ max_files_per_process = 65535
 # - Checkpoints -
 
 checkpoint_segments = <%= @checkpoint_segments %> 
-checkpoint_timeout = <%= @checkpoint_timeout %>
+#checkpoint_timeout = <%= @checkpoint_timeout %>
 #checkpoint_completion_target = 0.5	# checkpoint target duration, 0.0 - 1.0
 #checkpoint_warning = 30s		# 0 is off
 
@@ -124,7 +124,7 @@ effective_cache_size = <%= @effective_cache_size %>MB
 
 # - Other Planner Options -
 
-default_statistics_target = <%= @default_statistics_target %>
+#default_statistics_target = <%= @default_statistics_target %>
 #constraint_exclusion = off
 #from_collapse_limit = 8
 #join_collapse_limit = 8		# 1 disables collapsing of explicit 
