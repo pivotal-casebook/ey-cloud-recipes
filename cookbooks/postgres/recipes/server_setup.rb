@@ -1,6 +1,10 @@
 postgres_version = '8.4'
 postgres_root    = '/var/lib/postgresql'
 
+enable_package "dev-db/postgresql-base" do
+  version "8.4.2"
+end
+
 enable_package "dev-db/postgresql-server" do
   version "8.4.2"
 end
