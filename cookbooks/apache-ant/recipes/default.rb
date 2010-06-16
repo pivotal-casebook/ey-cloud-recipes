@@ -16,3 +16,10 @@ execute "add-to-path" do
   }
   not_if "grep 'export PATH=$PATH:/usr/local/apache-ant/bin' /etc/profile"
 end
+
+execute "add-to-classpath" do
+  command %Q{
+    echo 'export CLASSPATH=$CLASSPATH:/usr/local/apache-ant/lib/ant.jar' >> /etc/profile
+  }
+  not_if "grep 'export CLASSPATH=$CLASSPATH:/usr/local/apache-ant/lib/ant.jar' /etc/profile"
+end
