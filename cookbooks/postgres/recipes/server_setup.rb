@@ -1,6 +1,27 @@
 postgres_version = '8.4'
 postgres_root    = '/db/postgresql'
 
+execute "remove older postgresql-server" do
+  command "emerge --unmerge dev-db/postgresql-server-8.3.5"
+end
+
+execute "remove older postgresql-base" do
+  command "emerge --unmerge dev-db/postgresql-base-8.3.5"
+end
+
+enable_package "dev-db/postgresql-base" do
+  version "8.4.2"
+end
+
+enable_package "dev-db/postgresql-server" do
+  version "8.4.2"
+end
+
+package "dev-db/postgresql-server" do
+  version "8.4.2"
+  action :install
+end
+
 execute "remove kernel.shmmax from sysctl" do
   command "grep -v kernel.shmmax /etc/sysctl.conf >> /tmp/sysctl.conf"
   only_if { "grep kernel.shmmax=#{@node[:total_memory]} /etc/sysctl.conf" } 
