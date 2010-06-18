@@ -1,5 +1,10 @@
 TOPDIR = File.dirname(__FILE__)
 
+desc "upload to ENV=<env>"
+task :upload do
+  sh "ey-recipes --upload #{ENV["ENV"]}"
+end
+
 desc "Test your cookbooks for syntax errors"
 task :test do
   puts "** Testing your cookbooks for syntax errors"
