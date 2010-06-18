@@ -1,5 +1,5 @@
 postgres_root = '/db/postgresql'
-postgres_version = '8.3'
+postgres_version = '8.4'
 
 if ['db_slave'].include?(node[:instance_role])
 
@@ -66,14 +66,14 @@ if ['db_slave'].include?(node[:instance_role])
     mode "0700"
   end
 
-  directory "/db/postgresql/8.3" do
+  directory "/db/postgresql/8.4" do
     action :create
     owner "postgres"
     group "postgres"
     mode 0700
   end
 
-  directory "/db/postgresql/8.3/wal" do
+  directory "/db/postgresql/8.4/wal" do
     action :create
     owner "postgres"
     group "postgres"
@@ -82,11 +82,11 @@ if ['db_slave'].include?(node[:instance_role])
 
   execute "do_rsync?" do
     command "touch /db/resync"
-    only_if { ! FileTest.directory?("/db/postgresql/8.3/data") }
+    only_if { ! FileTest.directory?("/db/postgresql/8.4/data") }
   end
 
   execute "touch_000001_history" do
-    command "touch /db/postgresql/8.3/wal/00000001.history && chown postgres:postgres /db/postgresql/8.3/wal/00000001.history"
+    command "touch /db/postgresql/8.4/wal/00000001.history && chown postgres:postgres /db/postgresql/8.4/wal/00000001.history"
     only_if { FileTest.exists?("/db/resync") }
   end
 
@@ -96,7 +96,7 @@ if ['db_slave'].include?(node[:instance_role])
   end
 
   execute "start_rsync" do
-    command "su -c 'cd /db/postgresql/8.3;rsync -avPz --exclude .svn --exclude postgresql.conf --exclude recovery.conf --exclude pg_xlog #{node.engineyard.environment.db_host}:/db/postgresql/8.3/data/ /db/postgresql/8.3/data/' - postgres"
+    command "su -c 'cd /db/postgresql/8.4;rsync -avPz --exclude .svn --exclude postgresql.conf --exclude recovery.conf --exclude pg_xlog #{node.engineyard.environment.db_host}:/db/postgresql/8.4/data/ /db/postgresql/8.4/data/' - postgres"
     only_if { FileTest.exists?("/db/resync") }
   end
 
@@ -106,12 +106,12 @@ if ['db_slave'].include?(node[:instance_role])
   end
 
   execute "rm_xlog" do
-    command "find /db/postgresql/8.3/data/pg_xlog -type f | xargs rm -f"
+    command "find /db/postgresql/8.4/data/pg_xlog -type f | xargs rm -f"
     only_if { FileTest.exists?("/db/resync") }
   end
 
   execute "update_archive_command" do
-    command "ssh postgres@#{node.engineyard.environment.db_host} /db/postgresql/8.3/bin/update_archive_command #{node.engineyard.environment.db_slaves_hostnames}"
+    command "ssh postgres@#{node.engineyard.environment.db_host} /db/postgresql/8.4/bin/update_archive_command #{node.engineyard.environment.db_slaves_hostnames}"
     only_if { FileTest.exists?("/db/resync") }
 
   end
@@ -125,7 +125,7 @@ if ['db_slave'].include?(node[:instance_role])
   end
 
   execute "start_postgres" do
-    command "cd /db/postgresql/8.3/data;ln -sfv /db/postgresql/8.3/postgresql.conf . && cd /db/postgresql/8.3/data;ln -sfv /db/postgresql/8.3/pg_hba.conf . && /etc/init.d/postgresql-8.3 start"
+    command "cd /db/postgresql/8.4/data;ln -sfv /db/postgresql/8.4/postgresql.conf . && cd /db/postgresql/8.4/data;ln -sfv /db/postgresql/8.4/pg_hba.conf . && /etc/init.d/postgresql-8.4 start"
     only_if { FileTest.exists?("/db/resync") }
   end
 

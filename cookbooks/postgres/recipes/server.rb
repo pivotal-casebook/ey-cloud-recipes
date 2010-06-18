@@ -1,4 +1,4 @@
-postgres_version = '8.3'
+postgres_version = '8.4'
 postgres_root    = '/db/postgresql'
 
 require_recipe 'postgres::server_setup'
@@ -9,7 +9,7 @@ if ['solo', 'db_master'].include?(node[:instance_role])
   end
 end
 
-remote_file "/etc/conf.d/postgresql-8.3" do
+remote_file "/etc/conf.d/postgresql-8.4" do
   source "postgresql.conf"
   owner "root"
   group "root"

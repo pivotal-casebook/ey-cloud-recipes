@@ -1,4 +1,4 @@
-postgres_version = '8.3'
+postgres_version = '8.4'
 postgres_root    = '/db/postgresql'
 
 if ['solo', 'db_master'].include?(node[:instance_role])

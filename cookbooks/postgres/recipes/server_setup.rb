@@ -1,4 +1,4 @@
-postgres_version = '8.3'
+postgres_version = '8.4'
 postgres_root    = '/db/postgresql'
 
 execute "remove kernel.shmmax from sysctl" do
@@ -22,7 +22,7 @@ directory '/db/postgresql' do
 end
 
 if ['solo', 'db_master'].include?(node[:instance_role])
-  directory '/db/postgresql/8.3' do
+  directory '/db/postgresql/8.4' do
     owner 'postgres'
     group 'postgres'
     mode '0755'
@@ -38,14 +38,14 @@ if ['solo', 'db_master'].include?(node[:instance_role])
     only_if "[ ! -d #{postgres_root}/#{postgres_version}/data ]"
   end
 
-  directory "/db/postgresql/8.3/bin" do
+  directory "/db/postgresql/8.4/bin" do
     action :create
     owner "postgres"
     group "postgres"
     mode 0755
   end
 
-  remote_file "/db/postgresql/8.3/bin/update_archive_command" do
+  remote_file "/db/postgresql/8.4/bin/update_archive_command" do
     owner "postgres"
     group "postgres"
     source "update_archive_command"
