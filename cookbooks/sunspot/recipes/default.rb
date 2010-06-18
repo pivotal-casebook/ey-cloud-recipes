@@ -56,22 +56,22 @@ if ['solo', 'app_master', 'app', 'util'].include?(node[:instance_role])
       action :run
     end
  
-    # gem_package "sunspot_rails" do
-    #   source "http://gemcutter.org"
-    #   action :install
-    # end
-    #   
-    # gem_package "nokogiri" do
-    #   source "http://gemcutter.org"
-    #   action :install
-    # end
-    #  
-    # execute "install-sunspot-solr" do
-    #   user node[:owner_name]
-    #   group node[:owner_name]
-    #   command "sunspot-installer -f /data/#{app}/jettyapps/solr/solr"
-    #   action :run
-    # end
+    gem_package "sunspot_rails" do
+      source "http://gemcutter.org"
+      action :install
+    end
+      
+    gem_package "nokogiri" do
+      source "http://gemcutter.org"
+      action :install
+    end
+     
+    execute "install-sunspot-solr" do
+      user node[:owner_name]
+      group node[:owner_name]
+      command "sunspot-installer -f /data/#{app}/jettyapps/solr/solr"
+      action :run
+    end
   
     execute "restart-monit-solr" do
       command "/usr/bin/monit reload && " +
