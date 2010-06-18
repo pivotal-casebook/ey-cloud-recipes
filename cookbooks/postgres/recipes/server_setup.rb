@@ -1,26 +1,5 @@
-postgres_version = '8.4'
-postgres_root    = '/var/lib/postgresql'
-
-execute "remove older postgresql-server" do
-  command "emerge --unmerge dev-db/postgresql-server-8.3.5"
-end
-
-execute "remove older postgresql-base" do
-  command "emerge --unmerge dev-db/postgresql-base-8.3.5"
-end
-
-enable_package "dev-db/postgresql-base" do
-  version "8.4.2"
-end
-
-enable_package "dev-db/postgresql-server" do
-  version "8.4.2"
-end
-
-package "dev-db/postgresql-server" do
-  version "8.4.2"
-  action :install
-end
+postgres_version = '8.3'
+postgres_root    = '/db/postgresql'
 
 execute "remove kernel.shmmax from sysctl" do
   command "grep -v kernel.shmmax /etc/sysctl.conf >> /tmp/sysctl.conf"
@@ -42,21 +21,35 @@ directory '/db/postgresql' do
   recursive true
 end
 
-directory postgres_root do
-  action :nothing
-  recursive true
-
-  subscribes :delete, resources(:directory => '/db/postgresql'), :immediately
+if ['solo', 'db_master'].include?(node[:instance_role])
+  directory '/db/postgresql/8.3' do
+    owner 'postgres'
+    group 'postgres'
+    mode '0755'
+    action :create
+    recursive true
+  end
 end
+if ['solo', 'db_master'].include?(node[:instance_role])
+  execute "init-postgres" do
+    command "initdb -D #{postgres_root}/#{postgres_version}/data --encoding=UTF8 --locale=en_US.UTF-8"
+      action :run
+      user 'postgres'
+    only_if "[ ! -d #{postgres_root}/#{postgres_version}/data ]"
+  end
 
-link "setup-postgresq-db-my-symlink" do
-  to '/db/postgresql'
-  target_file postgres_root
-end
+  directory "/db/postgresql/8.3/bin" do
+    action :create
+    owner "postgres"
+    group "postgres"
+    mode 0755
+  end
 
-execute "init-postgres" do
-  command "initdb -D #{postgres_root}/#{postgres_version}/data --encoding=UTF8 --locale=en_US.UTF-8"
-  action :run
-  user 'postgres'
-  only_if "[ ! -d #{postgres_root}/#{postgres_version}/data ]"
+  remote_file "/db/postgresql/8.3/bin/update_archive_command" do
+    owner "postgres"
+    group "postgres"
+    source "update_archive_command"
+    mode 0755
+    backup 0
+  end
 end

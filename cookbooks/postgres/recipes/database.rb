@@ -1,12 +1,14 @@
 # Setup database.yml
 dbtype = 'postgresql'
+
 if ['solo', 'app', 'app_master', 'util'].include?(node[:instance_role])
 node.engineyard.apps.each do |app|
 
-  template "/data/#{app.name}/shared/config/database.yml" do
+  template "/data/#{app.name}/shared/config/keep.database.yml" do
     owner node.engineyard.environment.ssh_username
     group node.engineyard.environment.ssh_username
     mode 0655
+    backup 0
     source "database.yml.erb"
     variables({
       :dbuser => node.engineyard.environment.ssh_username,
@@ -18,8 +20,14 @@ node.engineyard.apps.each do |app|
     })
   end
 
+  execute "ln -sfv /data/#{app.name}/shared/config/keep.database.yml /data/#{app.name}/shared/config/database.yml" do
+    action :run
+  end
+
   execute "ln -sfv /data/#{app.name}/shared/config/database.yml /data/#{app.name}/current/config/database.yml" do
     action :run
   end
+
+
 end
 end
