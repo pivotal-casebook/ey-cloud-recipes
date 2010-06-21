@@ -1,8 +1,8 @@
 # Cookbook Name:: ssh_deploy_key
 # Recipe:: default
-
-repository_key = node[:applications].detect { |key, value| value.has_key?(:repository_name) }.last[:repository_name]
-application = repository_key.first
+application_hash = node[:applications].detect { |key, value| value.has_key?(:repository_name) }
+repository_key = application_hash.last[:repository_name]
+application = application_hash.first
 
 if repository_parts = repository_key.matches(/^(\w+:\/\/)?(\w+)@(.*):.*$/)
   config_file = File.directory?(File.join("/home", "username", ".ssh", "config"))
