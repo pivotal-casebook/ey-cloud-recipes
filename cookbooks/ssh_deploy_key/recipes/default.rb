@@ -4,7 +4,7 @@ application_hash = node[:applications].detect { |key, value| value.has_key?(:rep
 repository_key = application_hash.last[:repository_name]
 application = application_hash.first
 
-if repository_parts = repository_key.matches(/^(\w+:\/\/)?(\w+)@(.*):.*$/)
+if repository_parts = repository_key.match(/^(\w+:\/\/)?(\w+)@(.*):.*$/)
   config_file = File.directory?(File.join("/home", "username", ".ssh", "config"))
   username = node[:users].first[:username]
   
