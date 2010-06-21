@@ -41,6 +41,10 @@ if ['solo', 'db_master'].include?(node[:instance_role])
     createdb app.database_name do
       owner username
     end
+    # Does not look like the above works correctly
+    psql "alter-db-owner" do
+      sql "ALTER DATABASE #{app.database_name} OWNER TO #{username}"
+    end
   end
 end
 
