@@ -2,7 +2,18 @@ TOPDIR = File.dirname(__FILE__)
 
 desc "upload to ENV=<env>"
 task :upload do
-  sh "ey-recipes --upload #{ENV["ENV"]}"
+  sh "ey-recipes --upload #{@environment || ENV["ENV"]}"
+end
+
+desc "upload to all environments found by 'ey environments'"
+task :upload_all do
+  environments = `ey environments --all | grep instances`.split("\n")
+  environments.map! { |line| line.split("(").first.strip }
+  environments.each do |environment|
+    @environment = environment
+    Rake::Task["upload"].invoke
+    Rake::Task["upload"].reenable
+  end
 end
 
 desc "Test your cookbooks for syntax errors"
