@@ -2,7 +2,7 @@ TOPDIR = File.dirname(__FILE__)
 
 desc "upload to ENV=<env>"
 task :upload do
-  sh "ey-recipes --upload #{@environment || ENV["ENV"]}"
+  sh "ey recipes upload --environment #{@environment || ENV["ENV"]}"
 end
 
 desc "upload to all environments found by 'ey environments'"
