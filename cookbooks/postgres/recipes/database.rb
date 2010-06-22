@@ -3,6 +3,10 @@ dbtype = 'postgresql'
 
 if ['solo', 'app', 'app_master', 'util'].include?(node[:instance_role])
   node.engineyard.apps.each do |app|
+    execute "cp /data/#{app.name}/shared/config/database.yml /data/#{app.name}/shared/config/original.database.yml" do
+      action :run
+      only_if { File.exist?("/data/#{app.name}/shared/config/database.yml") && !File.exist?("/data/#{app.name}/shared/config/keep.database.yml") } 
+    end
 
     template "/data/#{app.name}/shared/config/keep.database.yml" do
       owner node.engineyard.environment.ssh_username
