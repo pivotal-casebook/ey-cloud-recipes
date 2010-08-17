@@ -5,6 +5,10 @@
 
 if ['solo', 'util'].include?(node[:instance_role]) && !node[:name].match(/^mongodb_/)
   node[:applications].each do |app_name,data|
+
+    ey_cloud_report "delayed_job" do
+      message "Deploying delayed::job for #{app_name}"
+    end
   
     # determine the number of workers to run based on instance size
     if node[:instance_role] == 'solo'
