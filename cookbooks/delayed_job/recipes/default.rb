@@ -3,6 +3,8 @@
 # Recipe:: default
 #
 
+puts "Node instance role: #{node[:instance_role]}, node name #{node[:name]}, node applications #{node[:applications].join(", ")}"
+
 if ['solo', 'util'].include?(node[:instance_role]) && !node[:name].match(/^mongodb_/)
   node[:applications].each do |app_name,data|
 
