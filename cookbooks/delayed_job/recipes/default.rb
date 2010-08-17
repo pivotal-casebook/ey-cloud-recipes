@@ -3,15 +3,15 @@
 # Recipe:: default
 #
 
-ey_cloud_report "WTFDJ" do
-  message "Node instance role: #{node[:instance_role]}, node name #{node[:name]}"
+ey_cloud_report "Node instance role: #{node[:instance_role]}, node name #{node[:name]}" do
+  message ""
 end
 
 if ['solo', 'util'].include?(node[:instance_role]) && !node[:name].match(/^mongodb_/)
   node[:applications].each do |app_name,data|
 
-    ey_cloud_report "WTFDJ" do
-      message "Err #{app_name}  with data #{data}"
+    ey_cloud_report "Err #{app_name}  with data #{data}" do
+      message ""
     end
 
     ey_cloud_report "delayed_job" do
