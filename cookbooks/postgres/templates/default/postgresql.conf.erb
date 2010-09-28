@@ -23,13 +23,13 @@ maintenance_work_mem = <%= @maintenance_work_mem %>
 
 # - Free Space Map -
 
-max_fsm_pages     = <%= @max_fsm_pages %>
-max_fsm_relations = <%= @max_fsm_relations %>
+#max_fsm_pages     = <%= @max_fsm_pages %>
+#max_fsm_relations = <%= @max_fsm_relations %>
 					# (change requires restart)
 
 # - Kernel Resource Usage -
 
-max_files_per_process = 65535
+#max_files_per_process = 65535
 					# (change requires restart)
 #shared_preload_libraries = ''		# (change requires restart)
 
@@ -74,7 +74,7 @@ max_files_per_process = 65535
 # - Checkpoints -
 
 checkpoint_segments = <%= @checkpoint_segments %> 
-checkpoint_timeout = <%= @checkpoint_timeout %>
+#checkpoint_timeout = <%= @checkpoint_timeout %>
 #checkpoint_completion_target = 0.5	# checkpoint target duration, 0.0 - 1.0
 #checkpoint_warning = 30s		# 0 is off
 
@@ -82,7 +82,7 @@ checkpoint_timeout = <%= @checkpoint_timeout %>
 
 #archive_mode = off		# allows archiving to be done
 				# (change requires restart)
-archive_command = '/bin/true'		# command to use to archive a logfile segment
+#archive_command = '/bin/true'		# command to use to archive a logfile segment
 #archive_timeout = 0		# force a logfile segment switch after this
 				# time; 0 is off
 
@@ -397,4 +397,4 @@ default_text_search_config = 'pg_catalog.english'
 # CUSTOMIZED OPTIONS
 #------------------------------------------------------------------------------
 
-#custom_variable_classes = ''		# list of custom variable class names
+custom_variable_classes = 'audit'		# list of custom variable class names
