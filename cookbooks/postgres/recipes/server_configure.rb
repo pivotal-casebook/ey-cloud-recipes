@@ -103,7 +103,7 @@ username = node.engineyard.ssh_username
 password = node.engineyard.ssh_password
 
 psql "create-db-user-#{username}" do
-  sql "create user #{username} with encrypted password '#{password}'"
+  sql "create user #{username} with createdb encrypted password '#{password}'"
   sql_not_if :sql => 'SELECT * FROM pg_roles',
              :assert => "grep -q #{username}"
 end
