@@ -8,15 +8,15 @@ execute "install-prince" do
   command %Q{
     curl -O http://www.princexml.com/download/#{package_tgz} &&
     tar zxvf #{package_tgz} &&
-    mv #{package_folder}/lib/prince /usr/local/prince &&
+    sudo #{package_folder}/install.sh &&
     rm #{package_tgz}
   }
-  not_if { File.directory?('/usr/local/prince') }
+  not_if { File.exists?('/usr/local/bin/prince') }
 end
 
 execute "add-to-path" do
   command %Q{
-    echo 'export PATH=$PATH:/usr/local/prince/bin' >> /etc/profile
+    echo 'export PATH=$PATH:/usr/local/bin' >> /etc/profile
   }
-  not_if "grep 'export PATH=$PATH:/usr/local/prince/bin' /etc/profile"
+  not_if "grep 'export PATH=$PATH:/usr/local/bin' /etc/profile"
 end
