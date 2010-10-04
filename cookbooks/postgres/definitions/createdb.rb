@@ -3,10 +3,14 @@ define :createdb, :user => 'postgres' do
   statement = %{su - postgres -c 'psql -h localhost -c "SELECT * FROM pg_database"'}
   owner = params[:owner]
 
-  psql "create database for #{db_name}" do
-    sql "CREATE DATABASE #{db_name} OWNER #{owner}"
+  execute "create database for #{db_name}" do
+    command %{psql -U postgres postgres -c \"CREATE DATABASE #{db_name} OWNER #{owner}\"}
+    not_if %{psql -U postgres postgres -c \"select count(*) from pg_catalog.pg_database where datname = '#{db_name}'\"}
+  end
 
-    not_if "test ! -z $(#{statement} | grep #{db_name})"
+  execute "create-db-user#{username}" do
+    command  %{psql -U postgres postgres -c \"CREATE USER #{username} with ENCRYPTED PASSWORD '#{password}' createdb\"}
+    not_if %{psql -U postgres postgres -c \"select count(*) from pg_roles where rolname='#{username}'\"}
   end
 
   psql "grant permissions to #{owner} on #{db_name}" do
