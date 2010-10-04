@@ -8,11 +8,6 @@ define :createdb, :user => 'postgres' do
     not_if %{psql -U postgres postgres -c \"select count(*) from pg_catalog.pg_database where datname = '#{db_name}'\"}
   end
 
-  execute "create-db-user#{username}" do
-    command  %{psql -U postgres postgres -c \"CREATE USER #{username} with ENCRYPTED PASSWORD '#{password}' createdb\"}
-    not_if %{psql -U postgres postgres -c \"select count(*) from pg_roles where rolname='#{username}'\"}
-  end
-
   psql "grant permissions to #{owner} on #{db_name}" do
     action :nothing
     sql "grant all on database #{db_name} to #{owner}"
