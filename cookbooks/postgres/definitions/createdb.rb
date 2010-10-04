@@ -1,6 +1,6 @@
 define :createdb, :user => 'postgres' do
   db_name = params[:name]
-  statement = %{su - postgres -c "psql -h localhost -c \\"SELECT * FROM pg_database\\""}
+  statement = %{sudo su - postgres -c 'psql -h localhost -c "SELECT * FROM pg_database"'}
   owner = params[:owner]
 
   psql "create database for #{db_name}" do
