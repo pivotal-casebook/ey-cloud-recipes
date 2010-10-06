@@ -5,7 +5,7 @@
  
 require 'digest/sha1'
 
-if ['solo', 'app_master', 'app', 'util'].include?(node[:instance_role])
+if ['solo', 'app_master', 'util'].include?(node[:instance_role])
   node[:applications].each do |app,data|
  
     directory "/data/#{app}/jettyapps" do
