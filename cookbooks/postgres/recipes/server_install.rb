@@ -29,7 +29,7 @@ when "8.4"
     group "root"
   end
 
-  packages_to_install = ['dev-db/postgresql-base-8.4.5.tbz2','dev-db/postgresql-server-8.4.5.tbz2'].each do |packages_to_fetch|
+  packages_to_install = ['dev-db/postgresql-base-8.4.2.tbz2','dev-db/postgresql-server-8.4.2.tbz2'].each do |packages_to_fetch|
     remote_file "/engineyard/portage/packages/#{packages_to_fetch}" do
       source "http://ey-portage.s3.amazonaws.com/#{node[:kernel][:machine]}/#{packages_to_fetch}"
       not_if { FileTest.exists?("/engineyard/portage/packages/#{packages_to_fetch}") }
@@ -37,14 +37,14 @@ when "8.4"
     end
   end
 
-  execute "emerge /engineyard/portage/packages/dev-db/postgresql-base-8.4.5.tbz2" do
+  execute "emerge /engineyard/portage/packages/dev-db/postgresql-base-8.4.2.tbz2" do
     action :run
-    not_if { FileTest.directory?("/var/db/pkg/dev-db/postgresql-base-8.4.5") }
+    not_if { FileTest.directory?("/var/db/pkg/dev-db/postgresql-base-8.4.2") }
   end
 
-  execute "emerge /engineyard/portage/packages/dev-db/postgresql-server-8.4.5.tbz2" do
+  execute "emerge /engineyard/portage/packages/dev-db/postgresql-server-8.4.2.tbz2" do
     action :run
-    not_if { FileTest.directory?("/var/db/pkg/dev-db/postgresql-server-8.4.5") }
+    not_if { FileTest.directory?("/var/db/pkg/dev-db/postgresql-server-8.4.2") }
   end
 
   execute "eselect postgresql set #{postgres_version}" do
